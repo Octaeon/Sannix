@@ -10,11 +10,13 @@
       ./hardware-configuration.nix
     ];
 
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "sandnix"; # Define your hostname.
+  networking.hostName = "sannix"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -50,18 +52,19 @@
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.main = {
-    isSystemUser = true;
+    isNormalUser = true;
     description = "main";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [];
+    openssh.authorizedKeys.keys = [];
+    packages = with pkgs; [ neofetch ];
   };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
-     git
+    # vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    wget
+    git
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -75,7 +78,9 @@
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+  };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
