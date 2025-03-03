@@ -44,6 +44,11 @@
     LC_TIME = "pl_PL.UTF-8";
   };
 
+  fonts = {
+    enableDefaultPackages = true;
+    packages = with pkgs; [ nerdfonts ];
+  };
+
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "us";
@@ -67,7 +72,7 @@
     curl
     inputs.helix.packages."${pkgs.system}".helix
   ];
-
+  
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
